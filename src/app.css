@@ -1,0 +1,33 @@
+/* app.css: global styles.
+   With Tailwind we style almost everything with classes directly in the HTML.
+   This file only loads Tailwind and defines our own color palette. */
+
+/* Loads all of Tailwind (only the classes we actually use end up in the build) */
+@import 'tailwindcss';
+
+/* @theme: our own colors and fonts.
+   "--color-paper" automatically creates classes like bg-paper, text-paper, border-paper. */
+@theme {
+  --color-paper: #f4efe6;      /* page background (warm paper) */
+  --color-sand: #ebe4d6;       /* lane background */
+  --color-card: #fffdf8;       /* card background */
+  --color-ink: #1f2a24;        /* main text */
+  --color-muted: #5b6560;      /* secondary text */
+  --color-line: #ddd4c3;       /* borders */
+  --color-forest: #2f4a3c;     /* primary color (buttons) */
+  --color-brass: #c9a66b;      /* accent / medium priority */
+  --color-sage: #8fa89a;       /* low priority */
+  --color-rust: #b4532a;       /* warning / high priority */
+
+  --font-serif: Georgia, 'Times New Roman', serif;
+}
+
+/* A reusable button style. @apply = use Tailwind classes inside CSS. */
+@layer components {
+  .btn {
+    @apply cursor-pointer rounded-full border border-line px-4 py-1.5 text-sm hover:bg-sand;
+  }
+  .btn-primary {
+    @apply border-forest bg-forest text-paper hover:bg-forest/90;
+  }
+}
