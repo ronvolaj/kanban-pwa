@@ -66,7 +66,7 @@
   <!-- Actions for this one issue -->
   <footer class="flex gap-1.5 border-t border-dashed border-line pt-2">
     <button class="btn px-2.5 py-0.5 text-xs" onclick={() => exportIcs(issue)}>ICS</button>
-    <button class="btn px-2.5 py-0.5 text-xs" onclick={() => shareIssue(issue)}>Teilen</button>
+    <button class="btn px-2.5 py-0.5 text-xs" onclick={() => shareIssue(issue)}>Share</button>
     <button class="btn px-2.5 py-0.5 text-xs" onclick={() => remove(issue.id)} title="Löschen">✕</button>
   </footer>
 </article>

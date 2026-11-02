@@ -1,52 +1,44 @@
-<!--
-  Lane.svelte: one column of the board (Do, Doing, Done or Archiv).
-  It is also the DROP ZONE for drag & drop.
--->
 <script>
-  import Card from './Card.svelte';
+  import Card from './Card.svelte';               // Karten-Komponente holen
 
-  // name   = name of the lane, e.g. "Done"
-  // issues = only the issues that belong to this lane
-  // move / remove = functions from App.svelte that change the data
-  let { name, issues, move, remove } = $props();
+  let { name, issues, move, remove } = $props();  // Daten von App: Name, Issues, 2 Funktionen
 
-  // $derived: recalculates automatically whenever "issues" changes
-  // → sum of story points in this lane
-  let points = $derived(issues.reduce((sum, issue) => sum + issue.points, 0));
+  let points = $derived(                          // Summe der Story Points (rechnet automatisch neu)
+    issues.reduce((sum, issue) => sum + issue.points, 0) // alle Punkte zusammenzählen, Start bei 0
+  );
 
-  // true while a card is dragged over this lane (for the highlight)
-  let over = $state(false);
+  let over = $state(false);                       // true, solange eine Karte über der Spalte schwebt
 
-  // dragover: the browser only allows a drop if we call preventDefault()
-  function dragOver(event) {
-    event.preventDefault();
-    over = true;
+  function dragOver(event) {                      // Karte wird über die Spalte gezogen
+    event.preventDefault();                       // nötig, sonst kein Ablegen möglich
+    over = true;                                  // Spalte hervorheben
   }
 
-  // drop: read the ID that Card.svelte stored in dragstart and move the issue here
-  function drop(event) {
-    event.preventDefault();
-    over = false;
-    const id = event.dataTransfer.getData('text/plain');
-    move(id, name);
+  function drop(event) {                          // Karte wird losgelassen
+    event.preventDefault();                       // Standardverhalten verhindern
+    over = false;                                 // Hervorhebung aus
+    const id = event.dataTransfer.getData('text/plain'); // ID der Karte lesen
+    move(id, name);                               // App: Issue in diese Spalte verschieben
   }
 </script>
 
-<!-- While a card is dragged over the lane (over = true), the dashed border turns golden -->
+<!-- Spalte; goldener Rand, solange eine Karte drüber schwebt -->
 <section
+  role="region"
+  aria-label={name}
   class="min-h-80 rounded-2xl border-2 border-dashed bg-sand p-4 transition-colors
          {over ? 'border-brass' : 'border-transparent'}"
   ondragover={dragOver}
   ondragleave={() => (over = false)}
   ondrop={drop}
 >
+  <!-- Überschrift: Name links, Punkte rechts -->
   <h2 class="mb-4 flex items-baseline justify-between text-xl">
     {name}
-    <!-- Sum of story points per lane -->
     <small class="font-sans text-sm font-semibold text-forest">{points} SP</small>
   </h2>
 
-  <!-- One card per issue. (issue.id) is the "key" so Svelte can track each card -->
+  <!-- für jedes Issue eine Karte; leer → Hinweis -->
   {#each issues as issue (issue.id)}
     <Card {issue} {remove} />
   {:else}

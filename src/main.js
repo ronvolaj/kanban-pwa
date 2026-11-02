@@ -1,9 +1,7 @@
-// main.js: entry point of the app.
-// It loads the global CSS (Tailwind) and renders the App component
-// into <div id="app"> in index.html.
+import { mount } from 'svelte';    // Funktion holen, die eine Komponente auf die Seite bringt
+import './app.css';                // globales CSS laden (Tailwind + unsere Farben)
+import App from './App.svelte';    // Hauptkomponente holen
 
-import { mount } from 'svelte';
-import './app.css';
-import App from './App.svelte';
-
-mount(App, { target: document.getElementById('app') });
+mount(App, {                       // App auf der Seite anzeigen …
+  target: document.getElementById('app') // … im <div id="app"> aus index.html
+});
